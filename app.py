@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, request 
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
@@ -15,12 +15,19 @@ class Item(Resource):
         return {'item':None}, 404
     
     def post(self, name):
-        item = {'name':name, 'price': 12.00}
+        data = request.get_json(silent=True)
+        if data in None:
+            return {'item':None}, 404
+        item = {'name':data['name'], 'price':data['price']}
         items.append(item)
         return item, 201
 
-api.add_resource(Item, '/item/<string:name>')
+class ItemList(Resource):
+    def get(self):
+        return {'items':items}
 
+api.add_resource(Item, '/item/<string:name>')
+api.add_resource(ItemList, '/items')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
