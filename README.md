@@ -1,2 +1,2 @@
 # rest-api
-## Creating a RESTful API using flask
+This is creating  RESTful API using Flask-RESTful
