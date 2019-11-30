@@ -1,7 +1,12 @@
+import os
 from flask import Flask, request 
 from flask_restful import Resource, Api
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'.env'))
+app.secret_key = os.environ.get('SECRET_KEY', 'development-key')
+print(app.secret_key)
 api = Api(app)
 
 items = [
