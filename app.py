@@ -9,12 +9,15 @@ items = [
         ]
 class Item(Resource):
     def get(self, name):
-        for item in items:
-            if item['name'] == name:
-                return item
-        return {'item':None}, 404
+        try:
+            item = next(filter(lambda x: x['name'] == name, items))
+            return item
+        except:
+            return {'item':None}, 404
     
     def post(self, name):
+        if next(filter(lambda x: x['name'] == name, items),None) != None:
+            return {'message', f'An item with {name} already exists.'}, 400
         data = request.get_json(silent=True)
         if data in None:
             return {'item':None}, 404
