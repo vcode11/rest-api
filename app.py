@@ -2,17 +2,22 @@ import os
 from flask import Flask, request 
 from flask_restful import Resource, Api
 from dotenv import load_dotenv
+from flask_jwt import JWT, jwt_required
+from security import  authenticate, identity
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'.env'))
+
 
 app = Flask(__name__)
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'.env'))
 app.secret_key = os.environ.get('SECRET_KEY', 'development-key')
-print(app.secret_key)
 api = Api(app)
+
+jwt = JWT(app, authenticate, identity)
 
 items = [
             
         ]
 class Item(Resource):
+    @jwt_required()
     def get(self, name):
         try:
             item = next(filter(lambda x: x['name'] == name, items))
