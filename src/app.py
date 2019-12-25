@@ -4,6 +4,8 @@ from flask_restful import Resource, Api
 from dotenv import load_dotenv
 from flask_jwt import JWT, jwt_required
 from security import  authenticate, identity
+from user import UserRegister
+
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)),'.env'))
 
 
@@ -56,6 +58,7 @@ class ItemList(Resource):
 
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
+api.add_resource(UserRegister, '/register')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
